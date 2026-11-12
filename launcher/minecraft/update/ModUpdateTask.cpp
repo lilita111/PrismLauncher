@@ -36,15 +36,8 @@ void ModUpdateTask::executeTask()
         return;
     }
 
-    // ResourceUpdateDialog only accepts Resource,
-    // so we convert the Mod* list to a Resource* list with a simple static_cast
     auto model = m_instance->loaderModList();
-    auto _modsList = model->allMods();
-    QList<Resource*> modsList;
-    modsList.reserve(_modsList.size());
-    for (auto mod : _modsList) {
-        modsList.append(static_cast<Resource*>(mod));
-    }
+    auto modsList = model->allResources();
 
     // Filter out disabled mods if "AutomaticallyUpdateModsEnabled" is true
     if (m_enabledModsOnly) {
