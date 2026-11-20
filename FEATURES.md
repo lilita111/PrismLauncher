@@ -37,12 +37,26 @@ and delete **only that feature**. Never delete the whole tree because one part b
 | `launcher/minecraft/OfficialLauncherExportTask.*` | F3 Official-launcher export | delete files |
 | `launcher/ui/MainWindow.cpp/.h/.ui` — export menu action + handler | F3 | remove those hunks only |
 | `launcher/CMakeLists.txt` — `OfficialLauncherExportTask.*` lines | F3 | remove those lines only |
+| `launcher/minecraft/mod/ModStore.*` | F4 Shared mod store | delete files |
+| `launcher/minecraft/mod/ModStoreTasks.*` | F4 | delete files |
+| `launcher/ui/dialogs/ModStoreDialog.*` | F4 | delete files (.ui picked up by AUTOUIC) |
+| `launcher/ui/MainWindow.cpp/.h/.ui` — `actionModStore` + handler | F4 | remove those hunks only |
+| `launcher/CMakeLists.txt` — `ModStore*` + `ModStoreDialog.*` lines | F4 | remove those lines only |
 | `FORK.md`, `FEATURES.md` | docs | always safe to keep/delete |
 
-**Note on `launcher/CMakeLists.txt`:** all three features touch it, but in disjoint,
+**Note on `launcher/CMakeLists.txt`:** all four features touch it, but in disjoint,
 clearly-labeled hunks (`GITHUB_SOURCES` block vs. single `ModUpdateTask` lines vs.
-single `OfficialLauncherExportTask` lines). A failure here means CMake config, not the
-features — check the error before deleting anything.
+single `OfficialLauncherExportTask` lines vs. `ModStore*` lines). A failure here means
+CMake config, not the features — check the error before deleting anything.
+
+## F4 — Shared mod store (cross-instance dedup)
+
+- Branch `feature/shared-mod-store`. Cleanly cut from develop.
+- Feature commits: see `git log origin/develop..feature/shared-mod-store`.
+- **Delete F4:** `git checkout feature/shared-mod-store && git reset --hard origin/develop`,
+  then remove its files per the ownership table. No other feature references it.
+- The store data itself (`<data>/modstore/`) is runtime state, not code — deleting F4
+  code does not touch it; delete the folder manually if you want the disk back.
 
 ## F1 — GitHub as a mod source
 
